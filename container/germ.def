@@ -1,0 +1,55 @@
+Bootstrap: library
+From: ubuntu:21.04
+
+##############################
+# test
+##############################
+%apprun test
+    echo "Container was created $NOW"
+    nextflow run /germ/nextflow/test.nf --NAME $NAME
+
+%applabels test
+    Author cfibke@hotmail.com
+    Version v0.0.1
+
+%apphelp test
+    This is the help for BASE.
+
+##############################
+# Global options
+##############################
+%post
+    #Installing all base dependencies
+    apt-get update && apt-get -y upgrade
+    apt-get -y install \
+    build-essential \
+    wget \
+    bzip2 \
+    ca-certificates \
+    libglib2.0-0 \
+    libxext6 \
+    libsm6 \
+    libxrender1 \
+    default-jdk \
+    git
+    rm -rf /var/lib/apt/lists/*
+    apt-get clean
+
+
+    #Installing Miniconda 3
+    touch .condarc
+    wget -c https://repo.anaconda.com/miniconda/Miniconda3-4.7.12-Linux-x86_64.sh
+    /bin/bash Miniconda3-4.7.12-Linux-x86_64.sh -bfp /usr/local
+
+    #Conda configuration of channels from .condarc file
+    conda config --file /.condarc --add channels bioconda
+    conda config --file /.condarc --add channels conda-forge
+
+    #Install nextflow
+    mkdir /software
+    wget -qO- https://get.nextflow.io | bash
+    mv nextflow /software
+    chmod 755 /software/nextflow
+
+%environment
+    export PATH=$PATH:/software

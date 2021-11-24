@@ -38,8 +38,8 @@ From: ubuntu:21.04
 
     #Installing Miniconda 3
     touch .condarc
-    wget -c https://repo.anaconda.com/miniconda/Miniconda3-4.7.12-Linux-x86_64.sh
-    /bin/bash Miniconda3-4.7.12-Linux-x86_64.sh -bfp /usr/local
+    wget -c https://repo.anaconda.com/miniconda/Miniconda3-4.7.10-Linux-x86_64.sh
+    /bin/bash Miniconda3-4.7.10-Linux-x86_64.sh -bfp /usr/local
 
     #Conda configuration of channels from .condarc file
     conda config --file /.condarc --add channels bioconda

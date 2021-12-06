@@ -10,24 +10,28 @@ process fastqStats {
     */
 
     conda '/germ/envs/fastq_process.yml'
+    publishDir "$outdir/$prefix/read_summary", mode: "copy"
 
     input:
-    tuple val(sample_id), file(read1), file(read2)
+    val prefix
+    file r1
+    file r2
+    val outdir
 
     output:
-    stdout
+    file "*summary.tsv"
 
     script:
     """
+    echo -e "Working with ${prefix}"
     seqkit stats \
         --tabular \
         --all \
-        ${read1}
+        ${r1} > ${prefix}_1summary.tsv
 
     seqkit stats \
         --tabular \
         --all \
-        ${read2}
-
+        ${r2} > ${prefix}_2summary.tsv
     """
 }

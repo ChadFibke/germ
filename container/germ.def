@@ -4,15 +4,20 @@ From: ubuntu:21.04
 ##############################
 # test
 ##############################
-%apprun test
+%runscript
     echo "Container was created $NOW"
-    nextflow run /germ/nextflow/test.nf --NAME $NAME
+    nextflow run \
+        /germ/nextflow/scripts/test.nf \
+        --prefix $PREFIX \
+        --r1 $R1 \
+        --r2 $R2 \
+        --outdir $OUTDIR
 
-%applabels test
+%labels test
     Author cfibke@hotmail.com
     Version v0.0.1
 
-%apphelp test
+%help test
     This is the help for BASE.
 
 ##############################
@@ -38,8 +43,8 @@ From: ubuntu:21.04
 
     #Installing Miniconda 3
     touch .condarc
-    wget -c https://repo.anaconda.com/miniconda/Miniconda3-4.7.12-Linux-x86_64.sh
-    /bin/bash Miniconda3-4.7.12-Linux-x86_64.sh -bfp /usr/local
+    wget -c https://repo.anaconda.com/miniconda/Miniconda3-4.7.10-Linux-x86_64.sh
+    /bin/bash Miniconda3-4.7.10-Linux-x86_64.sh -bfp /usr/local
 
     #Conda configuration of channels from .condarc file
     conda config --file /.condarc --add channels bioconda

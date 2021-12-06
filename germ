@@ -1,0 +1,59 @@
+#!/bin/bash
+set -e
+
+##########################
+echo "Argument Assignment..."
+##########################
+
+for ARGUMENT in "$@"
+do
+
+    KEY=$(echo $ARGUMENT | cut -f1 -d=)
+    VALUE=$(echo $ARGUMENT | cut -f2 -d=)
+
+    case "$KEY" in
+        prefix)
+            PREFIX=${VALUE}
+            ;;
+        r1)
+            READ1=${VALUE}
+            ;;
+        r2)
+            READ2=${VALUE}
+            ;;
+        outdir)
+            OUTDIR=${VALUE}
+            ;;
+        germ)
+            GERM=${VALUE}
+                ;;
+        *)
+        echo "Can not take ${VALUE} as an argument :("
+        exit
+    esac
+
+done
+
+# Find location of fastq files
+
+LOC1=$(echo $READ1 | awk 'BEGIN { FS = "/"} ; sub(FS $NF,x)')
+LOC2=$(echo $READ2 | awk 'BEGIN { FS = "/"} ; sub(FS $NF,x)')
+
+if [ "$LOC1" != "$LOC2" ]; then
+    echo -e "Expected read 1 and read paths to match \nRead1 path: ${LOC1}\Read2 path: ${LOC2}"
+    exit
+fi
+
+##########################
+echo "Spinning up Container..."
+##########################
+
+singularity run \
+    --bind ${LOC1}/:/data \
+    --bind ${GERM}/:/germ \
+    --bind ${OUTDIR}:/outdir  \
+    --env PREFIX=${PREFIX} \
+    --env R1=${READ1} \
+    --env R2=${READ2} \
+    --env OUTDIR=${OUTDIR} \
+    ${GERM}/container/germ.sif

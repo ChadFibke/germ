@@ -4,22 +4,33 @@ channels:
   - defaults
 dependencies:
   - _libgcc_mutex=0.1=main
-  - fastp=0.12.4=0
+  - ca-certificates=2021.10.26=h06a4308_2
+  - certifi=2021.10.8=py39h06a4308_0
   - fastqc=0.11.9=hdfd78af_1
   - font-ttf-dejavu-sans-mono=2.37=hd3eb1b0_0
   - fontconfig=2.13.1=h6c09931_0
   - freetype=2.11.0=h70c0345_0
   - icu=58.2=he6710b0_3
-  - libgcc=7.2.0=h69d50b8_2
+  - ld_impl_linux-64=2.35.1=h7274673_9
+  - libffi=3.3=he6710b0_2
   - libgcc-ng=9.1.0=hdf63c60_0
   - libpng=1.6.37=hbc83047_0
   - libstdcxx-ng=9.1.0=hdf63c60_0
   - libuuid=1.0.3=h7f8727e_2
   - libxml2=2.9.10=hb55368b_3
+  - ncurses=6.3=h7f8727e_2
   - openjdk=8.0.152=h7b6447c_3
+  - openssl=1.1.1l=h7f8727e_0
   - perl=5.26.2=h14c3975_0
+  - pip=21.2.4=py39h06a4308_0
+  - python=3.9.7=h12debd9_1
+  - readline=8.1=h27cfd23_0
   - seqkit=2.0.0=h9ee0642_0
+  - setuptools=58.0.4=py39h06a4308_0
+  - sqlite=3.36.0=hc218d9a_0
+  - tk=8.6.11=h1ccaba5_0
+  - trimmomatic=0.39=hdfd78af_2
+  - tzdata=2021e=hda174b7_0
+  - wheel=0.37.0=pyhd3eb1b0_1
   - xz=5.2.5=h7b6447c_0
   - zlib=1.2.11=h7b6447c_3
-prefix: /home/chadfibke/miniconda3/envs/fastq_process
-

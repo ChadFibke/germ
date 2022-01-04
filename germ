@@ -44,6 +44,11 @@ if [ "$LOC1" != "$LOC2" ]; then
     exit
 fi
 
+# Find read name
+R1=$(echo $READ1 | awk 'BEGIN { FS = "/"} ; { print $NF }')
+R2=$(echo $READ2 | awk 'BEGIN { FS = "/"} ; { print $NF }')
+
+
 ##########################
 echo "Spinning up Container..."
 ##########################
@@ -53,7 +58,6 @@ singularity run \
     --bind ${GERM}/:/germ \
     --bind ${OUTDIR}:/outdir  \
     --env PREFIX=${PREFIX} \
-    --env R1=${READ1} \
-    --env R2=${READ2} \
-    --env OUTDIR=${OUTDIR} \
-    ${GERM}/container/germ.sif
+    --env R1=${R1} \
+    --env R2=${R2} \
+    ${GERM}/container/*.sif

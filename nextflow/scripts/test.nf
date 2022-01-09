@@ -9,7 +9,9 @@ params.prefix = "NULL"
 params.outdir = "/outdir"
 
 // import modules
-include {fastqTrim} from '/germ/nextflow/modules/fastq.nf'
+include {
+  fastqTrim;
+  fastqStats} from '/germ/nextflow/modules/fastq.nf'
 
 // print options for user
 println """\
@@ -30,8 +32,12 @@ workflow {
 
   ch_read2 = Channel.fromPath( "/data/${params.r2}",
                                 checkIfExists: true)
-    fastqTrim( params.prefix,
-                ch_read1,
-                ch_read2,
-                params.outdir)
+    fastqTrim(
+      params.prefix,
+      ch_read1,
+      ch_read2,
+      params.outdir )
+
+    fastqStats(
+      fastqTrim.out )
 }

@@ -10,8 +10,7 @@ From: ubuntu:21.04
         /germ/nextflow/scripts/test.nf \
         --prefix $PREFIX \
         --r1 $R1 \
-        --r2 $R2 \
-        --outdir $OUTDIR
+        --r2 $R2
 
 %labels test
     Author cfibke@hotmail.com
@@ -36,6 +35,7 @@ From: ubuntu:21.04
     libsm6 \
     libxrender1 \
     default-jdk \
+    unzip \
     git
     rm -rf /var/lib/apt/lists/*
     apt-get clean

@@ -10,28 +10,28 @@ process fastqTrim {
   */
 
   conda '/germ/envs/fastq_process.yml'
-  publishDir "$outdir/$prefix/read_summary", mode: "copy"
+  publishDir "$OUTDIR/$PREFIX/read_summary", mode: "copy"
 
   input:
-  val(prefix)
-  file(r1)
-  file(r2)
-  val(outdir)
+  val(PREFIX)
+  file(R1)
+  file(R2)
+  val(OUTDIR)
 
   output:
   tuple \
-  val(prefix), \
-  path("${prefix}_1P.fastq.gz"), \
-  path("${prefix}_2P.fastq.gz"), \
-  val(outdir)
+  val(PREFIX), \
+  path("${PREFIX}_1P.fastq.gz"), \
+  path("${PREFIX}_2P.fastq.gz"), \
+  val(OUTDIR)
 
 
   script:
   """
   trimmomatic PE \
-      $r1 \
-      $r2 \
-      -baseout ${prefix}.fastq.gz \
+      $R1 \
+      $R2 \
+      -baseout ${PREFIX}.fastq.gz \
       ILLUMINACLIP:/germ/dependencies/trimmomatic/Illumina_adapters.fa:1:45:15 \
       LEADING:5 \
       TRAILING:5 \
@@ -53,29 +53,40 @@ process fastqStats {
       - Provide surface level fastqc metrics
     */
 
-    conda 'fastq_process'
-    publishDir "$outdir/$prefix/read_summary", mode: "copy"
+    conda '/germ/envs/fastq_process.yml'
+    publishDir "$OUTDIR/$PREFIX/read_summary", mode: "copy"
 
     input:
-    val prefix
-    file r1
-    file r2
-    val outdir
+    tuple \
+    val(PREFIX), \
+    file(R1_TRIMMED), \
+    file(R2_TRIMMED), \
+    val(OUTDIR)
 
     output:
-    file "*summary.tsv"
+    tuple \
+    val(PREFIX), \
+    path("${PREFIX}_1_seqkit.tsv"), \
+    path("${PREFIX}_2_seqkit.tsv"), \
+    path("${PREFIX}_1P_fastqc.zip"), \
+    path("${PREFIX}_2P_fastqc.zip"), \
+    val(OUTDIR)
 
     script:
     """
-    echo -e "Working with ${prefix}"
+    echo -e "Working with ${PREFIX}"
     seqkit stats \
-        --tabular \
-        --all \
-        ${r1} > ${prefix}_1summary.tsv
+      --tabular \
+      --all \
+      $R1_TRIMMED > ${PREFIX}_1_seqkit.tsv
 
     seqkit stats \
-        --tabular \
-        --all \
-        ${r2} > ${prefix}_2summary.tsv
+      --tabular \
+      --all \
+      $R2_TRIMMED > ${PREFIX}_2_seqkit.tsv
+
+    fastqc \
+      $R1_TRIMMED \
+      $R2_TRIMMED
     """
 }

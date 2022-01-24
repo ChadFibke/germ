@@ -13,6 +13,11 @@ include {
   fastqTrim;
   fastqStats} from '/germ/nextflow/modules/fastq.nf'
 
+include {
+  denovo_assembly;
+  assembly_correction
+   } from '/germ/nextflow/modules/assembly.nf'
+
 // print options for user
 println """\
                       ~ GERM ~
@@ -32,12 +37,27 @@ workflow {
 
   ch_read2 = Channel.fromPath( "/data/${params.r2}",
                                 checkIfExists: true)
-    fastqTrim(
-      params.prefix,
-      ch_read1,
-      ch_read2,
-      params.outdir )
 
-    fastqStats(
-      fastqTrim.out )
+
+  fastqTrim(
+    params.prefix,
+    ch_read1,
+    ch_read2,
+    params.outdir)
+
+  fastqStats(
+    fastqTrim.out,
+    params.outdir)
+
+  denovo_assembly(
+    fastqTrim.out,
+    params.outdir)
+
+  ch_assembly = fastqTrim.out
+    .combine(denovo_assembly.out, by: 0)
+
+  assembly_correction(
+    ch_assembly,
+    params.outdir)
+
 }

@@ -22,8 +22,7 @@ process fastqTrim {
   tuple \
   val(PREFIX), \
   path("${PREFIX}_1P.fastq.gz"), \
-  path("${PREFIX}_2P.fastq.gz"), \
-  val(OUTDIR)
+  path("${PREFIX}_2P.fastq.gz")
 
 
   script:
@@ -39,7 +38,6 @@ process fastqTrim {
       MINLEN:45 \
       TOPHRED33
   """
-
 
 }
 
@@ -60,7 +58,7 @@ process fastqStats {
     tuple \
     val(PREFIX), \
     file(R1_TRIMMED), \
-    file(R2_TRIMMED), \
+    file(R2_TRIMMED)
     val(OUTDIR)
 
     output:
@@ -69,8 +67,7 @@ process fastqStats {
     path("${PREFIX}_1_seqkit.tsv"), \
     path("${PREFIX}_2_seqkit.tsv"), \
     path("${PREFIX}_1P_fastqc.zip"), \
-    path("${PREFIX}_2P_fastqc.zip"), \
-    val(OUTDIR)
+    path("${PREFIX}_2P_fastqc.zip")
 
     script:
     """

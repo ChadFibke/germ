@@ -15,7 +15,8 @@ include {
 
 include {
   denovo_assembly;
-  assembly_correction
+  assembly_correction;
+  assembly_summary
    } from '/germ/nextflow/modules/assembly.nf'
 
 // print options for user
@@ -58,6 +59,10 @@ workflow {
 
   assembly_correction(
     ch_assembly,
+    params.outdir)
+
+  assembly_summary(
+    assembly_correction.out,
     params.outdir)
 
 }

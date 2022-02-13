@@ -15,9 +15,13 @@ include {
 
 include {
   denovo_assembly;
-  assembly_correction;
+  assembly_correction} from '/germ/nextflow/modules/assembly.nf'
+
+
+include {
   assembly_summary
-   } from '/germ/nextflow/modules/assembly.nf'
+  taxonomic_classification} from '/germ/nextflow/modules/validation.nf'
+
 
 // print options for user
 println """\
@@ -65,4 +69,7 @@ workflow {
     assembly_correction.out,
     params.outdir)
 
+  taxonomic_classification(
+    assembly_correction.out,
+    params.outdir)
 }

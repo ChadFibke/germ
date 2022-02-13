@@ -56,5 +56,10 @@ From: ubuntu:21.04
     mv nextflow /software
     chmod 755 /software/nextflow
 
+    #Install databases
+    mkdir /db
+    wget --directory-prefix=/db https://gembox.cbcb.umd.edu/mash/refseq.genomes.k21s1000.msh
+    wget --directory-prefix=/db https://data.ace.uq.edu.au/public/gtdb/data/releases/release202/202.0/bac120_taxonomy_r202.tsv
+
 %environment
     export PATH=$PATH:/software

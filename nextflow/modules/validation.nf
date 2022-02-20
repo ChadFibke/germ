@@ -9,7 +9,7 @@ process assembly_summary {
     - Estimate completness of genome
   */
 
-  conda '/germ/envs/annotation.yml'
+  conda '/germ/envs/validation.yml'
   publishDir "$OUTDIR/$PREFIX/assembly", mode: "copy"
 
   input:
@@ -46,7 +46,7 @@ process taxonomic_classification {
     - Estimate taxonamy of isolate's cleaned genome using mash
   */
 
-  conda '/germ/envs/annotation.yml'
+  conda '/germ/envs/validation.yml'
   publishDir "$OUTDIR/$PREFIX/assembly", mode: "copy"
 
   input:
@@ -73,5 +73,38 @@ process taxonomic_classification {
   tax=\$(grep -f hit /db/bac120_taxonomy_r202.tsv | awk -F";" '{print \$NF}')
 
   echo -e "${PREFIX}\t\$tax" >> ${PREFIX}_taxonomy.tsv
+  """
+}
+
+
+process  assembly_completion {
+  /**
+  Task:
+    - Estimate the completness of fixed assembly using busco
+  */
+
+  conda '/germ/envs/busco.yml'
+  publishDir "$OUTDIR/$PREFIX/assembly", mode: "copy"
+
+  input:
+  tuple \
+  val(PREFIX), \
+  path(CLEAN_ASSEMBLY)
+  val(OUTDIR)
+
+  output:
+  tuple \
+  val(PREFIX), \
+  path("busco/short_summary.specific.bacteria_odb10.busco.txt")
+
+
+  script:
+  """
+  busco \
+    --mode genome \
+    --lineage_dataset /db/bacteria_odb10 \
+    --in $CLEAN_ASSEMBLY \
+    --out busco \
+    --offline
   """
 }

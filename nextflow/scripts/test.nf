@@ -19,8 +19,9 @@ include {
 
 
 include {
-  assembly_summary
-  taxonomic_classification} from '/germ/nextflow/modules/validation.nf'
+  assembly_summary;
+  taxonomic_classification;
+  assembly_completion} from '/germ/nextflow/modules/validation.nf'
 
 
 // print options for user
@@ -70,6 +71,10 @@ workflow {
     params.outdir)
 
   taxonomic_classification(
+    assembly_correction.out,
+    params.outdir)
+
+  assembly_completion(
     assembly_correction.out,
     params.outdir)
 }

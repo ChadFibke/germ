@@ -57,6 +57,7 @@ singularity run \
     --bind ${LOC1}/:/data \
     --bind ${GERM}/:/germ \
     --bind ${OUTDIR}:/outdir  \
+    --bind /run:/run \
     --env PREFIX=${PREFIX} \
     --env R1=${R1} \
     --env R2=${R2} \

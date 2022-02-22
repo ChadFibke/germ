@@ -1,4 +1,4 @@
-# germ
+![germ_logo](https://github.com/ChadFibke/germ/tree/main/imgs/germ.png)
 
 ## Installation:
 

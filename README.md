@@ -7,7 +7,11 @@ Collect germ from github and corresponding singularity container
 ```
 $ git clone git@github.com:ChadFibke/germ.git
 
-$ cd ./germ/Container
+$ cd ./germ
+
+$ mkdir container
+
+$ cd container
 
 $ singularity pull --arch amd64 library://chadfibke/workflows/germ:latest .
 ```

@@ -23,6 +23,8 @@ include {
   taxonomic_classification;
   assembly_completion} from '/germ/nextflow/modules/validation.nf'
 
+include {
+  annotation} from '/germ/nextflow/modules/annotation.nf' 
 
 // print options for user
 println """\
@@ -37,14 +39,14 @@ println """\
 // Conduct main pipeline
 
 workflow {
-
+  // Collect PE reads for input 
   ch_read1 = Channel.fromPath( "/data/${params.r1}",
                                 checkIfExists: true)
 
   ch_read2 = Channel.fromPath( "/data/${params.r2}",
                                 checkIfExists: true)
 
-
+  // Step 1: Process and summarize fastq reads
   fastqTrim(
     params.prefix,
     ch_read1,
@@ -55,6 +57,7 @@ workflow {
     fastqTrim.out,
     params.outdir)
 
+  // Step 2: Conduct assembly, correction and summary of genome  
   denovo_assembly(
     fastqTrim.out,
     params.outdir)
@@ -70,6 +73,7 @@ workflow {
     assembly_correction.out,
     params.outdir)
 
+  // Step 3: Check genome's taxonomy and completeness
   taxonomic_classification(
     assembly_correction.out,
     params.outdir)
@@ -77,4 +81,10 @@ workflow {
   assembly_completion(
     assembly_correction.out,
     params.outdir)
+
+  // Step 4: Assign mlst and vir/res gene presence 
+  annotation(
+    assembly_correction.out,
+    params.outdir)
+
 }

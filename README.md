@@ -1,4 +1,4 @@
-![germ_logo](https://github.com/ChadFibke/germ/tree/main/imgs/germ.png)
+![germ_logo](https://github.com/ChadFibke/germ/blob/main/imgs/germ.png)
 
 ## Installation:
 

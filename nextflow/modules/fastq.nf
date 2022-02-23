@@ -64,10 +64,10 @@ process fastqStats {
     output:
     tuple \
     val(PREFIX), \
-    path("${PREFIX}_1_seqkit.tsv"), \
-    path("${PREFIX}_2_seqkit.tsv"), \
-    path("${PREFIX}_1P_fastqc.zip"), \
-    path("${PREFIX}_2P_fastqc.zip")
+    path("${PREFIX}.seqkit1.tsv"), \
+    path("${PREFIX}.seqkit2.tsv"), \
+    path("${PREFIX}.fastqc1.summary.txt"), \
+    path("${PREFIX}.fastqc2.summary.txt")
 
     script:
     """
@@ -75,15 +75,18 @@ process fastqStats {
     seqkit stats \
       --tabular \
       --all \
-      $R1_TRIMMED > ${PREFIX}_1_seqkit.tsv
+      $R1_TRIMMED > ${PREFIX}.seqkit1.tsv
 
     seqkit stats \
       --tabular \
       --all \
-      $R2_TRIMMED > ${PREFIX}_2_seqkit.tsv
+      $R2_TRIMMED > ${PREFIX}.seqkit2.tsv
 
     fastqc \
       $R1_TRIMMED \
       $R2_TRIMMED
+
+    unzip -p test_1P_fastqc.zip test_1P_fastqc/summary.txt > ${PREFIX}.fastqc1.summary.txt
+    unzip -p test_2P_fastqc.zip test_2P_fastqc/summary.txt > ${PREFIX}.fastqc2.summary.txt
     """
 }

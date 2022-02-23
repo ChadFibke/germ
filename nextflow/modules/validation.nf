@@ -95,7 +95,7 @@ process  assembly_completion {
   output:
   tuple \
   val(PREFIX), \
-  path("busco/short_summary.specific.bacteria_odb10.busco.txt")
+  path("${PREFIX}.busco.csv")
 
 
   script:
@@ -104,7 +104,9 @@ process  assembly_completion {
     --mode genome \
     --lineage_dataset /db/bacteria_odb10 \
     --in $CLEAN_ASSEMBLY \
-    --out busco \
+    --out ${PREFIX}_busco \
     --offline
+
+   egrep "%" ${PREFIX}_busco/short_summary.specific.bacteria_odb10.${PREFIX}_busco.text | tr -d "[:blank:]" > ${PREFIX}.busco.csv
   """
 }

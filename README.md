@@ -45,8 +45,8 @@ germ \
 outdir/
 |-- read_summary/
 |   |-- test_[12]P.fastq.gz - Fastq files after trimming
-|   |-- prefix_[12]P_fastqc.zip - Fastqc summary of both fastq files after trimming
-|   |-- prefix_[12]_seqkit.tsv - Seqkit summary of both fastq files after trimming (information on read count, length, quality quantiles)
+|   |-- prefix.fastqc[12].summary.txt - Fastqc summary for both fastq files after trimming
+|   |-- prefix.seqkit[12].tsv - Seqkit summary of both fastq files after trimming (information on read count, length, quality quantiles)
 |
 |-- assembly/
     |-- prefix.skesa.fa - Skesa denovo assembly (Draft genome in fasta form)
@@ -55,6 +55,5 @@ outdir/
     |-- prefix_taxonomy.tsv - Taxonomic identity of draft genome
     |-- prefix.mlst.tsv -The file name, scheme, sequence type and allele IDs
     |-- prefix.abricate.tsv - The file name, start/end (genomic coordinates), strand, gene name, coverage and feature identity
-    |--busco/
-      |-- short_summary.specific.bacteria_odb10.busco.txt - BUSCO summary for genome completeness     
+    |-- prefix.busco.csv - BUSCO summary for genome completeness     
 ```

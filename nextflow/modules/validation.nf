@@ -21,7 +21,7 @@ process assembly_summary {
   output:
   tuple \
   val(PREFIX), \
-  path("${PREFIX}_assembly_summary.tsv")
+  path("${PREFIX}.assembly.summary.tsv")
 
 
   script:
@@ -35,7 +35,7 @@ process assembly_summary {
     | cut -f3,4,5,6 \
     | awk '{for(col=1;col<=NF;col++)\$col=(a[col]+=\$col)}END{print}' | awk '{print ( ((\$2 + \$3) / \$1) * 100) }' >> gc_content
 
-   paste base.tsv gc_content > ./${PREFIX}_assembly_summary.tsv
+   paste base.tsv gc_content > ./${PREFIX}.assembly.summary.tsv
 
   """
 }
@@ -58,7 +58,7 @@ process taxonomic_classification {
   output:
   tuple \
   val(PREFIX), \
-  path("${PREFIX}_taxonomy.tsv")
+  path("${PREFIX}.taxonomy.tsv")
 
 
   script:
@@ -68,11 +68,11 @@ process taxonomic_classification {
   mash dist /db/refseq.genomes.k21s1000.msh ${CLEAN_ASSEMBLY}.msh > ${PREFIX}.tab
   sort -gk3  ${PREFIX}.tab | grep "GCF_" | head -n1 | cut -d_ -f1,2 > hit
 
-  echo -e "SAMPLE\ttaxonomy" > ${PREFIX}_taxonomy.tsv
+  echo -e "SAMPLE\ttaxonomy" > ${PREFIX}.taxonomy.tsv
 
   tax=\$(grep -f hit /db/bac120_taxonomy_r202.tsv | awk -F";" '{print \$NF}')
 
-  echo -e "${PREFIX}\t\$tax" >> ${PREFIX}_taxonomy.tsv
+  echo -e "${PREFIX}\t\$tax" >> ${PREFIX}.taxonomy.tsv
   """
 }
 

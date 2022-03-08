@@ -1,4 +1,4 @@
-![germ_logo](https://github.com/ChadFibke/germ/blob/main/imgs/germ.png)
+<img src="https://github.com/ChadFibke/germ/blob/main/imgs/logo.png" width="400" height="200">
 
 ## Installation:
 
@@ -15,6 +15,9 @@ $ cd container
 
 $ singularity pull --arch amd64 library://chadfibke/workflows/germ:latest .
 ```
+## Workflow
+
+<img src="https://github.com/ChadFibke/germ/blob/main/imgs/workflow.png" width="1000" height="600">
 
 ## Usage:
 First add germ to your `$PATH`

@@ -1,4 +1,9 @@
-<img src="https://github.com/ChadFibke/germ/blob/main/imgs/logo.png" width="400" height="200">
+<img src="https://github.com/ChadFibke/germ/blob/main/imgs/logo.png" width="300" height="150">
+
+## Introduction 
+
+A containerized nextflow pipeline designed to annotate prokaryote genomes. Germ accepts Illumina paired-end reads, performs read processing, denovo genome assembly and annotation of the assembled draft genome. This workflow is a modified, packaged version of the analyses used in a previous [paper]( https://academic.oup.com/ofid/article/6/11/ofz431/5583892?login=false) interested in characterizing Extraintestinal Pathogenic Escherichia coli genomes in an epidemiological context.
+
 
 ## Installation:
 
@@ -17,7 +22,15 @@ $ singularity pull --arch amd64 library://chadfibke/workflows/germ:latest .
 ```
 ## Workflow
 
-<img src="https://github.com/ChadFibke/germ/blob/main/imgs/workflow.png" width="1000" height="600">
+<img src="https://github.com/ChadFibke/germ/blob/main/imgs/workflow.png" width="900" height="500">
+
+1. Paired-end reads are trimmed using [trimmomatic]( https://github.com/usadellab/Trimmomatic). Trimmomatic is used to remove adapter sequences present from adapter read-through. This step also removes low quality bases (phred score < 5) from the beginning and end of each read, and finally uses a sliding window (10bp) approach to remove the 3’ section of the read once an average base of <= 19 is found. After trimming, reads with lengths >= 45bp are kept for sequential analyses.
+
+2. Both [seqkit]( https://bioinf.shenwei.me/seqkit/) and [fastqc]( https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) are used to summarize the trimmed reads. The total number of reads, read-length summaries, phred-score summaries and all fastqc basic statistics are collected from each read file.
+
+3. The trimmed reads are then assembled into contigs using [skesa]( https://github.com/ncbi/SKESA). The assembly’s contig bases are then corrected using [pilon]( https://github.com/broadinstitute/pilon). Briefly, this correction process will re-align the trimmed reads to the assembled contigs and only retain high quality alignments (mapq >= 20) and bases (phred >=20). Next, the retained alignment bases are summarized and compared to the assembly’s nucleotide at each genomic site across the assembly. Positions across the assembly will be changed to an alternative nucleotide with greater support than the originally placed nucleotide found in the assembly. The contigs are then removed if they have an average coverage less than 10X and a length < 500bp.
+
+4. The corrected assembly is then summarized and validated. First the corrected assembly’s length, contig number, length summary, N50, GC%, and more are summarized. The assembly’s taxonomic origin is also estimated using [mash]( https://github.com/marbl/Mash) and [GTDB]( https://gtdb.ecogenomic.org/). The final validation is to estimate the completeness of the assembly with [busco]( https://busco.ezlab.org/), which identified the proportion of expected single copy orthologs are found in the assembly.
 
 ## Usage:
 First add germ to your `$PATH`
@@ -40,7 +53,6 @@ germ \
 | germ | Absolute pathway to the git cloned germ directory |
 | outdir | A directory you would like the results to be written to |
 
-## Workflow explained
 
 ## Output
 

@@ -86,7 +86,7 @@ process fastqStats {
       $R1_TRIMMED \
       $R2_TRIMMED
 
-    unzip -p test_1P_fastqc.zip test_1P_fastqc/summary.txt > ${PREFIX}.fastqc1.summary.txt
-    unzip -p test_2P_fastqc.zip test_2P_fastqc/summary.txt > ${PREFIX}.fastqc2.summary.txt
+    unzip -p ${PREFIX}_1P_fastqc.zip ${PREFIX}_1P_fastqc/summary.txt > ${PREFIX}.fastqc1.summary.txt
+    unzip -p ${PREFIX}_2P_fastqc.zip ${PREFIX}_2P_fastqc/summary.txt > ${PREFIX}.fastqc2.summary.txt
     """
 }
